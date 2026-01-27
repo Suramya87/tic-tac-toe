@@ -25,7 +25,7 @@
 // -----------------------------------------------------------------------------
 
 const int AI_PLAYER   = 1;      // index of the AI player (O)
-const int HUMAN_PLAYER= 0;      // index of the human player (X)
+const int HUMAN_PLAYER= -1;      // index of the human player (X)
 
 TicTacToe::TicTacToe()
 {
@@ -246,5 +246,20 @@ void TicTacToe::setStateString(const std::string &s)
 void TicTacToe::updateAI() 
 {
     // we will implement the AI in the next assignment!
+    std::string currentState = stateString();
+
+    int bestMove =-1000;
+    int bestSquare = -4;
+
+    for(int i = 0; i<9; i++) {
+        if (currentState[i] == '0'){
+            currentState[i] = '2';
+            int newValue = -negamax(currentState,2,0,0,HUMAN_PLAYER);
+            if(newValue > bestMove) {
+                bestSquare = i;
+                bestMove = newValue;
+            }
+        }
+    }
 }
 
