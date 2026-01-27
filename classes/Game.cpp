@@ -6,8 +6,8 @@
 
 Game::Game()
 {
-	_gameOptions.AIPlayer = false;
-	_gameOptions.AIPlaying = false;
+	_gameOptions.AIPlayer = true;
+	_gameOptions.AIPlaying = true;
 	_gameOptions.currentTurnNo = 0;
 	_gameOptions.gameNumber = -1;
 	_gameOptions.numberOfPlayers = 0;
