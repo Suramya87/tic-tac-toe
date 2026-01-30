@@ -245,7 +245,6 @@ void TicTacToe::setStateString(const std::string &s)
 //
 void TicTacToe::updateAI() 
 {
-    // we will implement the AI in the next assignment!
     std::string currentState = stateString();
 
     int bestMove =-1000;
@@ -254,8 +253,8 @@ void TicTacToe::updateAI()
     for(int i = 0; i<9; i++) {
         if (currentState[i] == '0'){
             currentState[i] = '2';
-            int newValue = -negamax(currentState,0,0,0,HUMAN_PLAYER);
-            // int newValue = negamax(currentState, 0, -10000, 10000, HUMAN_PLAYER);
+            int newValue = -negamax(currentState,0,-10000,10000,HUMAN_PLAYER);
+            // int newValue = negamax(currentState, 0, 0, 0, HUMAN_PLAYER);
 
             if(newValue > bestMove) {
                 bestSquare = i;
@@ -293,32 +292,69 @@ int aiBoardEval(std::string& state) {
     return 0; // no winner
 }
 
+// ########################## old code just here for referance for me later this does not have alpha beta pruning
+// int TicTacToe::negamax(std::string& state, int depth, int alpha, int beta, int playerColor) {
+//     // if(aiBoardEval(state) != 0) {
+//     //     return -aiBoardEval(state);
+//     // }
+//     int score = aiBoardEval(state);
+//     if (score != 0){
+//         return -(score - depth);
+//     }
+//     if (aiTestForTerminalState(state)){
+//         return 0;
+//     }
 
-int TicTacToe::negamax(std::string& state, int depth, int alpha, int beta, int playerColor) {
-    // if(aiBoardEval(state) != 0) {
-    //     return -aiBoardEval(state);
-    // }
+//     int bestVal = -10000;
+
+//     for(int i = 0; i < 9; i++){
+//         if(state[i] == '0'){
+//             state[i] = playerColor == HUMAN_PLAYER ? '1':'2';
+//             int newVal = -negamax(state,depth+1,-beta,-alpha,-playerColor);
+//             if (newVal > bestVal){
+//                 bestVal = newVal;
+//             }
+//             state[i] = '0';
+//         }
+//     }
+//     return bestVal;  
+// }
+
+// alpha beta pruning implemented 
+int TicTacToe::negamax(std::string& state, int depth, int alpha, int beta, int playerColor)
+{
     int score = aiBoardEval(state);
-    if (score != 0){
-        return -(score - depth);
-    }
-    if (aiTestForTerminalState(state)){
+    if (score != 0)
+        return -(score - depth); 
+
+    if (aiTestForTerminalState(state))
         return 0;
-    }
 
     int bestVal = -10000;
 
-    for(int i = 0; i < 9; i++){
-        if(state[i] == '0'){
-            state[i] = playerColor == HUMAN_PLAYER ? '1':'2';
-            int newVal = -negamax(state,depth+1,-beta,-alpha,-playerColor);
-            if (newVal > bestVal){
-                bestVal = newVal;
-            }
+    for (int i = 0; i < 9; i++) {
+        if (state[i] == '0') {
+
+            state[i] = (playerColor == HUMAN_PLAYER ? '1' : '2');
+
+            int val = -negamax(state, depth + 1,-beta, -alpha,-playerColor);
+
             state[i] = '0';
+
+            // using the max() from stdlib to have find the max of the scores to then compare the paths to determine what branches to prun
+
+            bestVal = std::max(bestVal, val);
+
+            alpha = std::max(alpha, val);
+
+            // pruning
+            if (alpha >= beta) {
+                break;
+            }
         }
     }
-    return bestVal;  
+
+    return bestVal;
 }
 
 
