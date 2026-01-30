@@ -2,3 +2,9 @@ This is the tic-tac-toe implementation using imgui and c++. This program does re
 
 Implmentation 
 The game runs in turns of two player placing either a cross or a circle on the grid till one of them can connect three of them making them the winner or the game draws reaching a state where to progress can be made and the game is also transcribed into a given string as it is an easy way to store the game state.
+
+Update NegaMax ai implementation 
+
+I started mostly by following the negamax format to first have the ai find the best moves with the help of the aiBoardEval() function and having win states and the function aiTestForTerminalState() to have the problem find teh terminal state. The eval function has an array that has all the win condtions and the negamax functions job is to achieve any of those states while preventing the player to reach it.
+
+There was alot of expermenting that I end up doing as there were many times when ai behaved very differently and the code evolved as I learned more about how I could get it to "think" differently there were times where I go it to never lose but it would sometimes miss a win that it totally had or I at a point got it to play very aggressive but it had some flaws. Currently I believe I have achieved the best balacne of all but then again I dont think I could make it any smarter than I have at the moment without adding alot more code. This implementation makes use of alpha beta pruning as well which took me longer than I figured it would have as i forgot to change the eval values for player and ai scorcing as it worked when alpha beta was not a thing but when I tried making it was not beaving as expected but it has been fixed. At the moment I am trying to see if there is a performance improvement between the two versions but I dont know how to test them as of this point.
